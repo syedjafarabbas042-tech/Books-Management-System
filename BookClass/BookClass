@@ -1,0 +1,27 @@
+namespace Database
+{
+    internal class Book{
+        int id;
+        String title;
+        String author;
+        int price;
+
+        public Book(int i,String tit,String auth,int p){
+            id = i;
+            title = tit;
+            author = auth;
+            price = p;
+
+        }
+        public String  getdata(){
+            return $"{id},{title},{author},{price}";
+        }
+
+        public void displayinfo(){
+            Console.WriteLine($"Title is : {title}");
+            Console.WriteLine($"Author is : {author}");
+            Console.WriteLine($"Id is : {id}");
+            Console.WriteLine($"Price is : {price}");
+        }
+    }
+}
