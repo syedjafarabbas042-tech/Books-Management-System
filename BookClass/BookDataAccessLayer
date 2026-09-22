@@ -1,0 +1,126 @@
+using Database;
+using System.IO;
+namespace New_Database
+{
+    internal class BookDataAcess{
+        public static void Addbook(Book book){
+            string str = book.getdata();
+            FileStream file = new FileStream("books.txt",FileMode.Append);
+            StreamWriter wr = new StreamWriter(file);
+            wr.WriteLine(str);
+            wr.Close();
+            file.Close();
+    }
+        public static void ViweAllBoks(){
+            FileStream fil = new FileStream("books.txt",FileMode.Open);
+            StreamReader rd = new StreamReader(fil);
+            string l= rd.ReadLine();
+            if(l==null){
+                Console.WriteLine("No records found");
+            }
+            while(l!=null){
+                Console.WriteLine(l);
+                l=rd.ReadLine();
+            }
+            rd.Close();
+            fil.Close();
+        }
+
+
+       public void ReturnID(int id){
+    using (StreamReader rd = new StreamReader("books.txt")){
+        string line;
+        bool found = false;
+        while ((line = rd.ReadLine()) != null){
+           string[] result = line.Split(',');
+            if (int.Parse(result[0]) == id){
+                Console.WriteLine($"Book Found: {line}");
+                found = true;
+                break; 
+            }
+        }
+        if (!found){
+            Console.WriteLine("No book found");
+     }
+    }
+    }
+
+
+
+        public void CreateBackup(){
+            using (StreamReader readers = new StreamReader("books.txt")){
+            FileStream writers = new FileStream("Backup.txt",FileMode.Append);
+            StreamWriter writer = new StreamWriter(writers);
+            string line = readers.ReadLine();
+            while(line!=null){
+                writer.WriteLine(line);
+                line = readers.ReadLine();
+            }
+            writer.Close();
+            readers.Close();
+            Console.WriteLine("Backup Created Successfully");
+
+        }
+        }
+
+        static void Main(string[] args){
+            BookDataAcess bda = new BookDataAcess();
+            int choice = 0;
+
+            while (choice != 5){
+         Console.WriteLine("\n--- MENU ---");
+         Console.WriteLine("1. Add Book");
+         Console.WriteLine("2. View All Books");
+         Console.WriteLine("3. Find Book by ID");
+         Console.WriteLine("4. Create Backup");
+         Console.WriteLine("5. Exit");
+         Console.Write("Enter your choice: ");
+
+            choice = int.Parse(Console.ReadLine());
+                if (choice == 1){
+         Console.Write("Enter ID: ");
+         int id = int.Parse(Console.ReadLine());
+        Console.Write("Enter Title: ");
+        string title = Console.ReadLine();
+        Console.Write("Enter Author: ");
+        string author = Console.ReadLine();
+       Console.Write("Enter Price: ");
+        int price = int.Parse(Console.ReadLine());
+
+          Book b = new Book(id, title, author, price);
+          BookDataAcess.Addbook(b);
+         Console.WriteLine("Book Added Successfully!");
+                }
+                else if (choice == 2){
+                    BookDataAcess.ViweAllBoks();
+                }
+                else if (choice == 3){
+                    Console.Write("Enter Book ID to search: ");
+                    int searchId = int.Parse(Console.ReadLine());
+                    bda.ReturnID(searchId);
+                }
+                else if (choice == 4){
+                    bda.CreateBackup();
+                }
+                else if (choice == 5){
+                    Console.WriteLine("Exiting Program...");
+                }
+                else{ 
+                    Console.WriteLine("Invalid choice! Try again.");
+                }
+            }
+        }
+    }
+}
+
+
+                    
+                    
+                   
+
+
+
+
+
+
+
